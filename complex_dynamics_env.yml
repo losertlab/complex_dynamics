@@ -1,0 +1,7 @@
+name: complex_dynamics_env
+channels:
+  - defaults
+dependencies:
+  - python==3.9.12
+  - conda-merge
+prefix: /Users/noahchongsiriwatana/opt/anaconda3/envs/complex_dynamics_env
