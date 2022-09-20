@@ -35,6 +35,10 @@ If you have existing conda environments you need, merge them.
 
 ### Usage
 
+Activate the complex dynamics environment, or your merged environment.
+
+`conda activate complex_dynamics_env` or `conda activate path/to/local/localenv.yml`
+
 In your python program, import sys if not already imported.
 
 `import sys`
@@ -47,4 +51,4 @@ Import and use modules and functions, for example:
 
 `from complex_dynamics.image_analysis.locate_centroids import locate_centroids`
 
-print(locate_centroids());
+`print(locate_centroids());`
