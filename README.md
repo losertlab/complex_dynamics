@@ -70,9 +70,13 @@ Push your local branch to the remote repository.
 
 `git push --set-upstream origin my_feature_branch`
 
-Add your code to the appropriate folder in the package. If necessary, create a new folder in the `src/complex_dynamics/` folder, along with an empty `__init__.py` file. This will allow your code to be used as part of a library.
+Add your code to the appropriate folder in the package. If necessary, create a new folder in the `src/complex_dynamics/` folder, along with an empty `__init__.py` file. This will allow your code to be used as part of a library. Make sure to install all packages used by the code you are adding inside the `complex_dynamics_env` environment. Otherwise, your code won't be useable to others.
 
-When your changes are complete, stage, commit, and push your changes.
+When your changes are complete and you have installed all packages to the `complex_dynamics_env`, export the updated environment.
+
+`conda  env export --from-history > /path/to/complex_dynamics/complex_dynamics_env.yml`
+
+Next, stage, commit, and push your changes.
 
 `git add --all`
 `git commit -m "Descriptive comment here."`
