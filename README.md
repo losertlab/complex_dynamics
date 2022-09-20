@@ -49,6 +49,7 @@ Add the path to the `src` directory in the complex dynamics repository.
 
 Import and use modules and functions, for example:
 
-`from complex_dynamics.image_analysis.locate_centroids import locate_centroids`
-
-`print(locate_centroids());`
+```
+from complex_dynamics.image_analysis.locate_centroids import locate_centroids
+print(locate_centroids());
+```
