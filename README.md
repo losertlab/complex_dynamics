@@ -9,7 +9,6 @@ Follow these steps to use the complex dynamics toolbox.
 ### Prerequisites
 
 - git
-- anaconda
 
 ### Installation Steps
 
@@ -21,23 +20,7 @@ Move to the `complex_dynamics` directory.
 
 `cd /path/to/comple_dynamics/`
 
-Create environment for the toolbox.
-
-`conda env create -f complex_dynamics_env.yml`
-
-Activate the environment.
-
-`conda activate complex_dynamics_env`
-
-If you have existing conda environments you need, merge them.
-
-`conda-merge complex_dynamics_env.yml [env1.yml env2.yml ... envn.yml] > local/localenv.yml`
-
 ### Usage
-
-Activate the complex dynamics environment, or your merged environment.
-
-`conda activate complex_dynamics_env` or `conda activate path/to/local/localenv.yml`
 
 In your python program, import sys if not already imported.
 
@@ -70,11 +53,7 @@ Push your local branch to the remote repository.
 
 `git push --set-upstream origin my_feature_branch`
 
-Add your code to the appropriate folder in the package. If necessary, create a new folder in the `src/complex_dynamics/` folder, along with an empty `__init__.py` file. This will allow your code to be used as part of a library. Make sure to install all packages used by the code you are adding inside the `complex_dynamics_env` environment. Otherwise, your code won't be useable to others.
-
-When your changes are complete and you have installed all packages to the `complex_dynamics_env`, export the updated environment.
-
-`conda  env export --from-history > /path/to/complex_dynamics/complex_dynamics_env.yml`
+Add your code to the appropriate folder in the package. If necessary, create a new folder in the `src/complex_dynamics/` folder, along with an empty `__init__.py` file. This will allow your code to be used as part of a library. 
 
 Next, stage, commit, and push your changes.
 
@@ -86,4 +65,4 @@ Create a pull request on Github to merge your changes into the stable branch. Th
 
 ### Comments
 
-This repo is a work in progress. There will be issues using it at first, but this should be a good starting place to sharing code.
+This repo is a work in progress. It should be a good starting place to sharing code.
