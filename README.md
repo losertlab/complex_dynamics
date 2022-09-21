@@ -6,7 +6,7 @@ Complex dynamics toolbox built by Dr. Losert's research group. This package expo
 
 Follow these steps to use the complex dynamics toolbox.
 
-### Prerequisites
+### Prerequisites/Packages
 
 - git
 
@@ -54,6 +54,8 @@ Push your local branch to the remote repository.
 `git push --set-upstream origin my_feature_branch`
 
 Add your code to the appropriate folder in the package. If necessary, create a new folder in the `src/complex_dynamics/` folder, along with an empty `__init__.py` file. This will allow your code to be used as part of a library. 
+
+List all dependencies your code has in the **Prerequisites/Packages** section of `README.md`.
 
 Next, stage, commit, and push your changes.
 
