@@ -12,13 +12,13 @@ Follow these steps to use the complex dynamics toolbox.
 
 ### Installation Steps
 
-Clone the repo at REPO NAME.
+Clone the repo at `git@github.com:losertlab/complex_dynamics.git`.
 
 `git clone <reponame>`
 
 Move to the `complex_dynamics` directory.
 
-`cd /path/to/comple_dynamics/`
+`cd /path/to/complex_dynamics/`
 
 ### Usage
 
@@ -67,9 +67,11 @@ List all dependencies your code has in the **Prerequisites/Packages** section of
 
 Next, stage, commit, and push your changes.
 
-`git add --all`
-`git commit -m "Descriptive comment here."`
-`git push`
+```
+git add --all
+git commit -m "Descriptive comment here."
+git push
+```
 
 Create a pull request on Github to merge your changes into the stable branch. The pull request should be into `master` from `my_feature_branch`. Add a reviewer to the pull request. They will look over your changes and merge the pull request.
 
