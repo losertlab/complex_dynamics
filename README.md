@@ -33,9 +33,13 @@ Add the path to the `src` directory in the complex dynamics repository.
 Import and use modules and functions, for example:
 
 ```
-from complex_dynamics.image_analysis.locate_centroids import locate_centroids
-print(locate_centroids());
+from complex_dynamics.example_module import example_function
+print(example_function(param1, param2));
 ```
+
+### Documentation
+
+This module is documented using [docstrings](https://www.datacamp.com/tutorial/docstrings-python).
 
 ### Adding Your Code
 
@@ -53,7 +57,11 @@ Push your local branch to the remote repository.
 
 `git push --set-upstream origin my_feature_branch`
 
-Add your code to the appropriate folder in the package. If necessary, create a new folder in the `src/complex_dynamics/` folder, along with an empty `__init__.py` file. This will allow your code to be used as part of a library. 
+Add your code to the appropriate folder in the package. If necessary, create a new folder in the `src/complex_dynamics/` folder, along with a new `__init__.py` file. This will allow your code to be used as part of a library. 
+
+Connect your function to the module with a line in `/complex_dynamics/module_folder/__init__.py` such as:
+
+`from complex_dynamics.example_module.example_function import example_function`
 
 List all dependencies your code has in the **Prerequisites/Packages** section of `README.md`.
 
