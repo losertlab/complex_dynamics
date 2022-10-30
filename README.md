@@ -59,9 +59,9 @@ Push your local branch to the remote repository.
 
 Add your code to the appropriate folder in the package. If necessary, create a new folder in the `complex_dynamics` folder, along with a new `__init__.py` file. This will allow your code to be used as part of a library. 
 
-Connect your function to the module with a line in `/complex_dynamics/module_folder/__init__.py` such as:
+Connect your function to the module by modifying `/complex_dynamics/module_folder/__init__.py` such as:
 
-`from example_module.example_function import example_function`
+`from example_module import example_module.example_function`
 
 List all dependencies your code has in the **Prerequisites/Packages** section of `README.md`.
 
