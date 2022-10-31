@@ -1,1 +1,2 @@
+from image_analysis.correlation_matrix import correlation_matrix
 from image_analysis.locate_centroids import locate_centroids
