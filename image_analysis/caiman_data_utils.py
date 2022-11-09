@@ -12,6 +12,7 @@ class CaimanDataUtils:
         shape = spatial_components['shape']
         dims = params['data/dims']
         spatial_components = pd.DataFrame(np.vstack((indices[:]//dims[0], indices[:]%dims[0])).T, columns = ['x','y'])
+        spatial_components['y'] = spatial_components['y'].apply(lambda x: dims[1]-x)
         
         self.dims = dims
         self.indptr = indptr
