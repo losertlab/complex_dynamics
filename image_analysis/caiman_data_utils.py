@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from statistics import mean
 
 class CaimanDataUtils:
     def __init__(self, data):
@@ -10,8 +11,15 @@ class CaimanDataUtils:
         indptr = spatial_components['indptr']
         shape = spatial_components['shape']
         dims = params['data/dims']
-        pos = pd.DataFrame(np.vstack((indices[:]//dims[0], indices[:]%dims[0])).T, columns = ['x','y'])
+        spatial_components = pd.DataFrame(np.vstack((indices[:]//dims[0], indices[:]%dims[0])).T, columns = ['x','y'])
         
         self.dims = dims
-        self.pos = pos
+        self.indptr = indptr
+        self.spatial_components = spatial_components
         self.traces = pd.DataFrame(np.transpose(estimates['F_dff']))
+
+    def get_spatial_component(self, idx):
+        return self.spatial_components.iloc[self.indptr[idx]:self.indptr[idx+1],:]
+
+    def get_spatial_separation(self, idx1, idx2):
+        return 1
