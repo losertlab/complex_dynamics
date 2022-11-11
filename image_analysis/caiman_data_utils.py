@@ -3,6 +3,7 @@ import numpy as np
 from statistics import mean
 from math import sqrt
 from image_analysis import correlation_matrix
+import bokeh.plotting as bpl
 
 class CaimanDataUtils:
     def __init__(self, data):
@@ -27,7 +28,11 @@ class CaimanDataUtils:
         self.separations = pd.DataFrame(separations)
 
     def get_spatial_component(self, idx):
-        return self.spatial_components.iloc[self.indptr[idx]:self.indptr[idx+1],:]
+        idxn = np.asarray([idx]) if np.isscalar(idx) else np.asarray(idx)
+        components = pd.DataFrame(columns=['x','y'])
+        for idx in idxn:
+            components = pd.concat([components, self.spatial_components.iloc[self.indptr[idx]:self.indptr[idx+1],:]])
+        return components            
 
     def get_spatial_separation(self, idx1, idx2):
         loc1 = self.get_spatial_component(idx1)
@@ -43,4 +48,10 @@ class CaimanDataUtils:
         comp['distance'] = comp.apply(lambda row: self.separations[row['cell1']][row['cell2']], axis=1)
         
         return comp
-        
+    
+    def get_image_overlay(self, title="title"):
+        graph = bpl.figure(title=title)
+        graph.scatter(self.spatial_components['x'], self.spatial_components['y'])
+        return graph
+
+
