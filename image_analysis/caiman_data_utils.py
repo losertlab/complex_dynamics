@@ -15,9 +15,13 @@ class CaimanDataUtils:
         shape = spatial_components['shape']
         dims = params['data/dims']
         spatial_components = pd.DataFrame(np.vstack((indices[:]//dims[0], indices[:]%dims[0])).T, columns = ['x','y'])
-        spatial_components['y'] = spatial_components['y'].apply(lambda x: dims[1]-x)
+        spatial_components['idx'] = np.nan
+        idx_num = 0
+        for i in np.arange(indptr.len()-1):
+            spatial_components['idx'] = spatial_components.idx.fillna(value=i, limit=indptr[i+1]-indptr[i])
         traces = pd.DataFrame(np.transpose(estimates['F_dff']))
         separations = np.zeros((indptr.len()-1, indptr.len()-1))
+        
         self.dims = dims
         self.indptr = indptr
         self.spatial_components = spatial_components
@@ -26,13 +30,13 @@ class CaimanDataUtils:
         for (x, y), el in np.ndenumerate(separations):
             separations[x][y] = self.get_spatial_separation(x, y)
         self.separations = pd.DataFrame(separations)
+        self.filtered_components = spatial_components
 
     def get_spatial_component(self, idx):
-        idxn = np.asarray([idx]) if np.isscalar(idx) else np.asarray(idx)
-        components = pd.DataFrame(columns=['x','y'])
-        for idx in idxn:
-            components = pd.concat([components, self.spatial_components.iloc[self.indptr[idx]:self.indptr[idx+1],:]])
-        return components            
+        idxn = [idx] if np.isscalar(idx) else idx
+        components = pd.DataFrame(columns=['idx','x','y'])
+        components = pd.concat([components, self.spatial_components.loc[self.spatial_components['idx'].isin(idxn)]])
+        return components
 
     def get_spatial_separation(self, idx1, idx2):
         loc1 = self.get_spatial_component(idx1)
@@ -53,5 +57,12 @@ class CaimanDataUtils:
         graph = bpl.figure(title=title)
         graph.scatter(self.spatial_components['x'], self.spatial_components['y'])
         return graph
+
+    def filter_boundary(self):
+        x = self.spatial_components['x']
+        y = self.spatial_components['y']
+        self.filtered_components = self.spatial_components.loc[~((self.spatial_components['x']+1).isin(x) & self.spatial_components['y'].isin(y)) | ~((self.spatial_components['x']-1).isin(x) & self.spatial_components['y'].isin(y)) | ~((self.spatial_components['y']+1).isin(y) & self.spatial_components['x'].isin(x)) | ~((self.spatial_components['y']-1).isin(y) & self.spatial_components['x'].isin(x))]
+       
+
 
 
