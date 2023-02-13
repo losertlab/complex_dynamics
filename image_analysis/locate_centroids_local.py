@@ -4,6 +4,8 @@ import logging
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import sys
+import ast
 
 try:
     cv2.setNumThreads(0)
@@ -19,7 +21,11 @@ from caiman.summary_images import local_correlations_movie_offline
 
 def main():
     pass
-    print("local centroids")
+    opts_dict = ast.literal_eval(sys.argv[2])
+    opts_dict["fnames"] = os.path.relpath(opts_dict["fnames"], os.getcwd().replace("C:", "/c").replace("\\", "/"))
+    
+    print(os.path.isfile(opts_dict["fnames"]))
+    #opts = params.CNMFParams(params_dict=opts_dict)
 
 if __name__ == "__main__":
     main()
