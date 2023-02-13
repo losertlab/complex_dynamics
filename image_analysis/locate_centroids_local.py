@@ -19,8 +19,7 @@ from caiman.summary_images import local_correlations_movie_offline
 
 def main():
     pass
-    print("local")
-    return "test"
+    print("local centroids")
 
 if __name__ == "__main__":
     main()

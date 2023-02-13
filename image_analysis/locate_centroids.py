@@ -35,8 +35,5 @@ def locate_centroids(fnames, complex_dynamics_path,
     List[List[int]]: Description of returned value.
     """ 
     os.chdir(complex_dynamics_path+"/image_analysis")
-    #loc = {}
-    #exec(open("locate_centroids_local.py").read(), globals(), loc)
-    #return loc["test"]
-    return subprocess.run(['python', 'locate_centroids_local.py'], stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
+    return subprocess.check_output(['python', 'locate_centroids_local.py'], shell=True)
 
