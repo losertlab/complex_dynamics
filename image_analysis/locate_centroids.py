@@ -42,7 +42,7 @@ def locate_centroids(fnames, complex_dynamics_path, params):
     List[List[int]]: Description of returned value.
     """ 
     os.chdir(complex_dynamics_path+"/image_analysis")
-    hdf5_file = "locate_centroids_local.pickle"
+    hdf5_file = "locate_centroids_local.hdf5"
     subprocess.check_output(['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file], shell=True).decode()
     return h5py.File(hdf5_file, 'r+')
 
