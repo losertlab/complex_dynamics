@@ -25,6 +25,7 @@ def main():
     fnames = [os.path.relpath(sys.argv[1], cwd)]
     opts_dict = ast.literal_eval(sys.argv[2])
     opts_dict["fnames"] = fnames 
+    hdf5_file = sys.argv[3]
     
     opts = params.CNMFParams(params_dict=opts_dict)
     
@@ -56,7 +57,7 @@ def main():
     cnm = cnmf.CNMF(n_processes, params=opts, dview=dview)
     cnm.fit_file(motion_correct=True)
 
-    print(cnm)
+    cnm.save(hdf5_file)
 
 if __name__ == "__main__":
     main()
