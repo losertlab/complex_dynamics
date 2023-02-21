@@ -34,30 +34,40 @@ def main():
     c, dview, n_processes = cm.cluster.setup_cluster(
         backend='local', n_processes=None, single_thread=False)
 
-    #mc = MotionCorrect(fnames, dview=dview, **opts.get_group('motion'))
+    mc = MotionCorrect(fnames, dview=dview, **opts.get_group('motion'))
 
-   # mc.motion_correct(save_movie=True)
-   # m_els = cm.load(mc.fname_tot_rig)
-    #border_to_0 = 0 if mc.border_nan == 'copy' else mc.border_to_0 
+    mc.motion_correct(save_movie=True)
+    m_els = cm.load(mc.fname_tot_rig)
+    border_to_0 = 0 if mc.border_nan == 'copy' else mc.border_to_0 
 
-   # fname_new = cm.save_memmap(mc.mmap_file, base_name='memmap_', order='C',
-    #    border_to_0=border_to_0, dview=dview) # exclude borders
+    fname_new = cm.save_memmap(mc.mmap_file, base_name='memmap_', order='C',
+        border_to_0=border_to_0, dview=dview) # exclude borders
 
 # now load the file
-    #Yr, dims, T = cm.load_memmap(fname_new)
-   # images = np.reshape(Yr.T, [T] + list(dims), order='F')
+    Yr, dims, T = cm.load_memmap(fname_new)
+    images = np.reshape(Yr.T, [T] + list(dims), order='F')
 
-   # cm.stop_server(dview=dview)
-   # c, dview, n_processes = cm.cluster.setup_cluster(
-   #     backend='local', n_processes=None, single_thread=False)
-
-    #cnm = cnmf.CNMF(n_processes, params=opts, dview=dview)
-    #cnm = cnm.fit(images)
+    cm.stop_server(dview=dview)
+    c, dview, n_processes = cm.cluster.setup_cluster(
+        backend='local', n_processes=None, single_thread=False)
 
     cnm = cnmf.CNMF(n_processes, params=opts, dview=dview)
-    cnm.fit_file(motion_correct=True)
+    cnm = cnm.fit(images)
+    
+    Cn = cm.local_correlations(images.transpose(1,2,0))
+    Cn[np.isnan(Cn)] = 0
+
+    cnm = cnm.refit(images, dview=dview)
+
+    cnm.estimates.evaluate_components(images, cnm.params, dview=dview)
+
+    cnm.estimates.detrend_df_f(quantileMin=8, frames_window=250)
+
+    cnm.estimates.select_components(use_object=True)
 
     cnm.save(hdf5_file)
+
+    cm.stop_server(dview=dview)
 
 if __name__ == "__main__":
     main()
