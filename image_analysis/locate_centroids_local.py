@@ -6,6 +6,7 @@ import numpy as np
 import os
 import sys
 import ast
+import pickle
 
 try:
     cv2.setNumThreads(0)
@@ -26,6 +27,7 @@ def main():
     opts_dict = ast.literal_eval(sys.argv[2])
     opts_dict["fnames"] = fnames 
     hdf5_file = sys.argv[3]
+    cn_file = sys.argv[4]
     
     opts = params.CNMFParams(params_dict=opts_dict)
     
@@ -66,6 +68,9 @@ def main():
     cnm.estimates.select_components(use_object=True)
 
     cnm.save(hdf5_file)
+    outfile = open(cn_file, 'wb')
+    pickle.dump(Cn, outfile)
+    outfile.close()
 
     cm.stop_server(dview=dview)
 

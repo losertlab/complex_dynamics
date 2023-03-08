@@ -14,6 +14,7 @@ class CaimanDataUtils:
         indptr = spatial_components['indptr']
         shape = spatial_components['shape']
         dims = params['data/dims']
+        traces = None
         spatial_components = pd.DataFrame(np.vstack((indices[:]//dims[0], indices[:]%dims[0])).T, columns = ['x','y'])
         spatial_components['idx'] = np.nan
         idx_num = 0
@@ -21,16 +22,22 @@ class CaimanDataUtils:
             spatial_components['idx'] = spatial_components.idx.fillna(value=i, limit=indptr[i+1]-indptr[i])
         traces = pd.DataFrame(np.transpose(estimates['F_dff']))
         separations = np.zeros((indptr.len()-1, indptr.len()-1))
-        
+        self.estimates = estimates
+        self.params = params
         self.dims = dims
         self.indptr = indptr
         self.spatial_components = spatial_components
         self.traces = traces
-        self.corrs = correlation_matrix(traces)
+        self.corrs = None
         for (x, y), el in np.ndenumerate(separations):
             separations[x][y] = self.get_spatial_separation(x, y)
         self.separations = pd.DataFrame(separations)
         self.filtered_components = spatial_components
+
+    def get_corrs(self):
+        if not self.corrs:
+            self.corrs = correlation_matrix(self.traces)
+        return self.corrs
 
     def get_spatial_component(self, idx):
         idxn = [idx] if np.isscalar(idx) else idx
@@ -63,6 +70,6 @@ class CaimanDataUtils:
         y = self.spatial_components['y']
         self.filtered_components = self.spatial_components.loc[~((self.spatial_components['x']+1).isin(x) & self.spatial_components['y'].isin(y)) | ~((self.spatial_components['x']-1).isin(x) & self.spatial_components['y'].isin(y)) | ~((self.spatial_components['y']+1).isin(y) & self.spatial_components['x'].isin(x)) | ~((self.spatial_components['y']-1).isin(y) & self.spatial_components['x'].isin(x))]
        
-
+    corrs = property(get_corrs)
 
 
