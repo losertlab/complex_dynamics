@@ -15,23 +15,20 @@ class CaimanDataUtils:
         shape = spatial_components['shape']
         dims = params['data/dims']
         traces = None
+        corrs = None
         spatial_components = pd.DataFrame(np.vstack((indices[:]//dims[0], indices[:]%dims[0])).T, columns = ['x','y'])
         spatial_components['idx'] = np.nan
         idx_num = 0
         for i in np.arange(indptr.len()-1):
             spatial_components['idx'] = spatial_components.idx.fillna(value=i, limit=indptr[i+1]-indptr[i])
         traces = pd.DataFrame(np.transpose(estimates['F_dff']))
-        separations = np.zeros((indptr.len()-1, indptr.len()-1))
         self.estimates = estimates
         self.params = params
         self.dims = dims
         self.indptr = indptr
         self.spatial_components = spatial_components
         self.traces = traces
-        self.corrs = None
-        for (x, y), el in np.ndenumerate(separations):
-            separations[x][y] = self.get_spatial_separation(x, y)
-        self.separations = pd.DataFrame(separations)
+        self.separations = None
         self.filtered_components = spatial_components
 
     def get_corrs(self):
@@ -53,6 +50,12 @@ class CaimanDataUtils:
         return sqrt(xsep**2 + ysep**2)
 
     def  get_pairwise_comparisons(self):
+        if not self.separations:
+            separations = np.zeros((indptr.len()-1, indptr.len()-1))
+            for (x, y), el in np.ndenumerate(separations):
+                separations[x][y] = self.get_spatial_separation(x, y)
+            self.separations = pd.DataFrame(separations)
+        
         comp = pd.DataFrame(np.repeat(np.arange(0,self.indptr.len()-1,1),self.indptr.len()), columns=['cell1'])
         comp['cell2'] = np.tile(np.arange(0,self.indptr.len()-1,1),self.indptr.len()).tolist()
         comp['corr'] = comp.apply(lambda row: self.corrs[row['cell1']][row['cell2']], axis=1)
