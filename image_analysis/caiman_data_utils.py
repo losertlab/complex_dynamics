@@ -29,7 +29,7 @@ class CaimanDataUtils:
         self.spatial_components = spatial_components
         self.traces = traces
         self.separations = None
-        self.num_cells = shape[1]
+        self.num_cells = shape[1]-1
         #self.filtered_components = spatial_components
 
     def get_corrs(self):
