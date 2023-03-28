@@ -30,12 +30,23 @@ class CaimanDataUtils:
         self.traces = traces
         self.separations = None
         self.num_cells = shape[1]-1
+        self.cell_locs = None
         #self.filtered_components = spatial_components
 
     def get_corrs(self):
         if not self.corrs:
             self.corrs = correlation_matrix(self.traces)
         return self.corrs
+
+    def get_cell_locs(self):
+        if not self.cell_locs:
+            self.cell_locs = []
+            for i in range(self.num_cells):
+                roi = self.get_spatial_component(i)
+                x = mean(roi['x'])
+                y = mean(roi['y'])
+                self.cell_locs.append((x,y))
+
 
     def get_spatial_component(self, idx):
         idxn = [idx] if np.isscalar(idx) else idx
