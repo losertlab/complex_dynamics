@@ -26,6 +26,7 @@ class CaimanDataUtils:
         self.estimates = estimates
         self.params = params
         self.dims = dims
+        self.spikes = spikes
         self.indptr = indptr
         self.spatial_components = spatial_components
         self.traces = traces
