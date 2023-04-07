@@ -14,6 +14,7 @@ class CaimanDataUtils:
         indptr = spatial_components['indptr']
         shape = spatial_components['shape']
         dims = params['data/dims']
+        spikes = estimates.S
         traces = None
         corrs = None
         spatial_components = pd.DataFrame(np.vstack((indices[:]//dims[0], indices[:]%dims[0])).T, columns = ['x','y'])
