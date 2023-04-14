@@ -15,6 +15,7 @@ class CaimanDataUtils:
         shape = spatial_components['shape']
         dims = params['data/dims']
         spikes = estimates['S']
+        raw_traces = estimates['C']
         traces = None
         corrs = None
         spatial_components = pd.DataFrame(np.vstack((indices[:]//dims[0], indices[:]%dims[0])).T, columns = ['x','y'])
@@ -27,18 +28,20 @@ class CaimanDataUtils:
         self.params = params
         self.dims = dims
         self.spikes = spikes
+        self.raw_traces = raw_traces
         self.indptr = indptr
         self.spatial_components = spatial_components
         self.traces = traces
+        self._corrs = corrs
         self.separations = None
         self.num_cells = shape[1]-1
         self.cell_locs = None
         #self.filtered_components = spatial_components
 
     def get_corrs(self):
-        if not self.corrs:
-            self.corrs = correlation_matrix(self.traces)
-        return self.corrs
+        if not self._corrs:
+            self._corrs = correlation_matrix(self.traces)
+        return self._corrs
 
     def get_cell_locs(self):
         if not self.cell_locs:
