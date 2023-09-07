@@ -45,6 +45,8 @@ def locate_centroids(fnames, complex_dynamics_path, params):
     os.chdir(complex_dynamics_path+"/image_analysis")
     hdf5_file = "locate_centroids_local.hdf5"
     cn_file = "cn.pickle"
+    with open(hdf5_file, 'w') as fp:
+        pass
     subprocess.check_output(['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file], shell=True).decode()
 
     infile = open(cn_file, 'rb')
