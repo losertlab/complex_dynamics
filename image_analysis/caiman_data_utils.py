@@ -5,6 +5,7 @@ from math import sqrt
 from image_analysis import correlation_matrix
 import bokeh.plotting as bpl
 
+# wrapper + utilities class for caiman data
 class CaimanDataUtils:
     def __init__(self, data):
         estimates = data['estimates']
