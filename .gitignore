@@ -2,6 +2,7 @@
 *.swp
 *.hdf5
 *.pickle
+*.tif
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
