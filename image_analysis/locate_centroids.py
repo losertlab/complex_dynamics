@@ -49,7 +49,7 @@ def locate_centroids(fnames, complex_dynamics_path, params):
         pass
     with open(cn_file, 'wb') as fp:
         pickle.dump([], fp)
-    subprocess.check_output(['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file], shell=True).decode()
+    subprocess.check_output(['python', '-u', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file], shell=True).decode()
 
     infile = open(cn_file, 'rb')
     cn = pickle.load(infile)
