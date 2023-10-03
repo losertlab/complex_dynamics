@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from statistics import mean
 from math import sqrt
-from image_analysis import correlation_matrix
+from correlation_matrix import correlation_matrix
 import bokeh.plotting as bpl
 
 class CaimanDataUtils:
@@ -68,7 +68,7 @@ class CaimanDataUtils:
 
     def  get_pairwise_comparisons(self):
         if not self.separations:
-            separations = np.zeros((indptr.len()-1, indptr.len()-1))
+            separations = np.zeros((self.indptr.len()-1, self.indptr.len()-1))
             for (x, y), el in np.ndenumerate(separations):
                 separations[x][y] = self.get_spatial_separation(x, y)
             self.separations = pd.DataFrame(separations)
@@ -92,4 +92,5 @@ class CaimanDataUtils:
        
     corrs = property(get_corrs)
 
-
+# KATHERINE LI
+# create a function that takes a df containing indices and xy coordinates of neurons, and convert it into a binarized matrix (ie image), s.t. each img/elem contains the loc of just that neuron
