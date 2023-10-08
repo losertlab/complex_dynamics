@@ -5,6 +5,7 @@ import pickle
 import codecs
 import numpy as np
 from PIL import Image, ImageSequence
+import tifffile as tf
 
 class Socket:
     def __init__(self, ip, port, name=""):
@@ -101,12 +102,14 @@ class Socket:
             self.sendLMT_obj(page_data)
 
     def rec_tif_stack(self):
-        tif_data = []
         n_frames, stime = self.recLMT()
-        for i in range(int(n_frames)):
+        n_frames = int(n_frames)
+        for i in range(n_frames):
             page, stime = self.recLMT_obj()
-            tif_data.append(page)
-        return (tif_data, stime)
+            if i == 0:
+                tf.imwrite(tif_file, page)
+            else:
+                tf.imwrite(tif_file, page, append=True)
 
     def send_tif_page(self, file_path, page):
         img = Image.open(file_path)
@@ -156,6 +159,7 @@ class SocketClient(Socket):
     def __init__(self, ip, port, name=""):
         super().__init__(ip, port, name)
         self.connectCount = 0
+        self.connectServer()
 
     def connectServer(self):
         try:
