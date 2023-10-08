@@ -96,6 +96,7 @@ class Socket:
         data = np.asarray(img)
         self.sendLMT(str(img.n_frames))
         for i, page in enumerate(ImageSequence.Iterator(img)):
+            print(i, flush=True)
             page_data = np.asarray(page)
             self.sendLMT_obj(page_data)
 
@@ -116,7 +117,7 @@ class Socket:
     def rec_tif_page(self):
         return self.recLMT_obj()
 
-class SocketClient(Socket):
+class SocketServer(Socket):
     def __init__(self, ip, port, name=""):
         super().__init__(ip, port, name)
         self.socketOpen()
@@ -151,7 +152,7 @@ class SocketClient(Socket):
         except Exception as e:
             self.exceptionHandler(e)
 
-class SocketServer:
+class SocketClient:
     def __init__(self, ip, port):
         self.TCP_SERVER_IP = ip
         self.TCP_SERVER_PORT = port
