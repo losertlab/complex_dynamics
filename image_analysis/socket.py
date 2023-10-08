@@ -126,7 +126,7 @@ class SocketServer(Socket):
 
     def socketClose(self):
         super().socketClose()
-        print(self.name + u'HPC socket [ TCP_IP: ' + self.TCP_IP +  ', TCP_PORT: ' + str(self.TCP_PORT) + ' ] is closed', flush=True)
+        print(self.name + u' socket [ TCP_IP: ' + self.TCP_IP +  ', TCP_PORT: ' + str(self.TCP_PORT) + ' ] is closed', flush=True)
 
     def socketOpen(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -152,8 +152,45 @@ class SocketServer(Socket):
         except Exception as e:
             self.exceptionHandler(e)
 
-class SocketClient:
-    def __init__(self, ip, port):
-        self.TCP_SERVER_IP = ip
-        self.TCP_SERVER_PORT = port
+class SocketClient(Socket):
+    def __init__(self, ip, port, name=""):
+        super().__init__(ip, port, name)
+        self.connectCount = 0
 
+    def connectServer(self):
+        try:
+            self.sock = socket.socket()
+            self.conn = self.sock
+            self.sock.connect((self.TCP_IP, self.TCP_PORT))
+            print(self.name + u' client socket is connected with server socket [ TCP_SERVER_IP: ' + self.TCP_IP + ', TCP_SERVER_PORT: ' + str(self.TCP_PORT) + ' ]', flush=True)
+            self.connectCount = 0
+            self.sendData()
+            self.closeServer()
+
+        except Exception as e:
+            print(e, flush=True)
+            self.connectCount += 1
+            if self.connectCount == 10:
+                print(u'Connect fail %d times. exit program'%(self.connectCount), flush=True)
+                sys.exit()
+            print(u'%d times try to connect with server'%(self.connectCount), flush=True)
+            self.connectServer()
+
+    def closeServer(self):
+        super().socketClose()
+        print(self.name + u' disconnected from server socket [ TCP_SERVER_IP: ' + self.TCP_IP + ', TCP_SERVER_PORT: ' + str(self.TCP_PORT) + ' ]', flush=True)
+
+    def dataSender(self):
+        pass
+
+    def exceptionHandler(self, e):
+        print('EXCEPTION sending data: ' + str(e), flush=True)
+        self.closeServer()
+        time.sleep(1)
+        self.connectServer()
+
+    def sendData(self):
+        try:
+            self.dataSender()
+        except Exception as e:
+            self.exceptionHandler(e)

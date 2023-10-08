@@ -13,13 +13,16 @@ try:
 except:
     pass
 
+print(os.environ['CONDA_DEFAULT_ENV'], flush=True)
+#print(help('modules'), flush=True)
+
 import caiman as cm
 from caiman.motion_correction import MotionCorrect
 from caiman.source_extraction.cnmf import cnmf as cnmf
 from caiman.source_extraction.cnmf import params as params
-print('test', flush=True)
 def main():
     print('locate_centroids_local', flush=True)
+    print('locate_centroids_local')
     #cwd = os.getcwd().replace("C:", "/c").replace("\\", "/")
     #fnames = [os.path.relpath(sys.argv[1], cwd)]
     #opts_dict = ast.literal_eval(sys.argv[2])
