@@ -102,7 +102,7 @@ class Socket:
             page_data = np.asarray(page)
             self.sendLMT_obj(page_data)
 
-    def rec_tif_stack(self):
+    def rec_tif_stack(self, tif_file):
         n_frames, stime = self.recLMT()
         n_frames = int(n_frames)
         for i in range(n_frames):
