@@ -169,8 +169,8 @@ class SocketClient(Socket):
             self.sock.connect((self.TCP_IP, self.TCP_PORT))
             print(self.name + u' client socket is connected with server socket [ TCP_SERVER_IP: ' + self.TCP_IP + ', TCP_SERVER_PORT: ' + str(self.TCP_PORT) + ' ]', flush=True)
             self.connectCount = 0
-            self.sendData()
-            self.closeServer()
+            #self.sendData()
+            #self.closeServer()
 
         except Exception as e:
             print(e, flush=True)
