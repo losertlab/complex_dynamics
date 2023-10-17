@@ -52,7 +52,7 @@ def locate_centroids(fnames, complex_dynamics_path, params):
     print('locate_centroids', flush=True)
     try:
         print(os.environ['CONDA_DEFAULT_ENV'], flush=True)
-        result = subprocess.run(['python', 'test_local.py'], text=True, capture_output=True, check=False)
+        result = subprocess.run(['. ~/scratch.datadriver/mambaforge/etc/profile.d/conda.sh; conda activate caiman; conda env list; python test_local.py'], text=True, capture_output=True, check=False, shell=True)
         #result = subprocess.run(['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file], text=True, capture_output=True, check=False, shell=True)
         #result = subprocess.check_output(['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file], shell=True).decode()
         print(result, flush=True)
