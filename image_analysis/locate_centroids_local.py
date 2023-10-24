@@ -22,6 +22,8 @@ from caiman.summary_images import local_correlations_movie_offline
 
 def main():
     print('locate_centroids_local', flush=True)
+    for arg in sys.argv:
+        print(arg, flush=True)
     pass
     cwd = os.getcwd().replace("C:", "/c").replace("\\", "/")
     fnames = [os.path.relpath(sys.argv[1], cwd)]

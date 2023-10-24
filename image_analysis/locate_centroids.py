@@ -3,7 +3,7 @@ import os
 import h5py
 import pickle
 
-def locate_centroids(fnames, complex_dynamics_path, params):
+def locate_centroids(fnames, complex_dynamics_path, params, hdf5_file, cn_file):
     params = {
         "fnames": fnames,
         "fr": 4,
@@ -43,8 +43,6 @@ def locate_centroids(fnames, complex_dynamics_path, params):
     List[List[int]]: Description of returned value.
     """ 
     os.chdir(complex_dynamics_path+"/image_analysis")
-    hdf5_file = "locate_centroids_local.hdf5"
-    cn_file = "cn.pickle"
     with open(hdf5_file, 'w') as fp:
         pass
     with open(cn_file, 'wb') as fp:
@@ -52,10 +50,12 @@ def locate_centroids(fnames, complex_dynamics_path, params):
     print('locate_centroids', flush=True)
     try:
         print(os.environ['CONDA_DEFAULT_ENV'], flush=True)
-        result = subprocess.run(['. ~/scratch.datadriver/mambaforge/etc/profile.d/conda.sh; conda activate caiman; conda env list; python test_local.py'], text=True, capture_output=True, check=False, shell=True)
-        #result = subprocess.run(['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file], text=True, capture_output=True, check=False, shell=True)
-        #result = subprocess.check_output(['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file], shell=True).decode()
-        print(result, flush=True)
+        script = ['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file]
+        print(script, flush=True)
+        result = subprocess.run(script, text=True, capture_output=True, check=False, shell=True)
+        print(result.stdout, flush=True)
+        print(result.stderr, flush=True)
+
     except Exception as e:
         print(e, flush=True)
 
