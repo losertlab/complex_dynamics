@@ -105,7 +105,9 @@ class Socket:
     def rec_tif_stack(self, tif_file):
         n_frames, stime = self.recLMT()
         n_frames = int(n_frames)
+        print("n_frames: " + str(n_frames), flush=True)
         for i in range(n_frames):
+            print(i, flush=True)
             page, stime = self.recLMT_obj()
             if i == 0:
                 tf.imwrite(tif_file, page)

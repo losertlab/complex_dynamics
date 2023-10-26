@@ -2,6 +2,7 @@ import subprocess
 import os
 import h5py
 import pickle
+from sys import platform
 
 def locate_centroids(fnames, complex_dynamics_path, params, hdf5_file, cn_file):
     params = {
@@ -50,11 +51,16 @@ def locate_centroids(fnames, complex_dynamics_path, params, hdf5_file, cn_file):
     print('locate_centroids', flush=True)
     try:
         print(os.environ['CONDA_DEFAULT_ENV'], flush=True)
-        script = ['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file]
-        print(script, flush=True)
-        result = subprocess.run(script, text=True, capture_output=True, check=False, shell=True)
-        print(result.stdout, flush=True)
-        print(result.stderr, flush=True)
+        if platform == "win64":
+            script = ['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file]
+            print(script, flush=True)
+            result = subprocess.run(script, text=True, capture_output=True, check=False, shell=True)
+        else:
+            script = ['python', 'test_local.py']
+            print(script, flush=True)
+            result = subprocess.run(script, text=True, capture_output=True, check=False, shell=True)
+        print("stdout: " + result.stdout, flush=True)
+        print("stderr: " + result.stderr, flush=True)
 
     except Exception as e:
         print(e, flush=True)
