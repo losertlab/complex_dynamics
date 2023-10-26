@@ -51,7 +51,8 @@ def locate_centroids(fnames, complex_dynamics_path, params, hdf5_file, cn_file):
     print('locate_centroids', flush=True)
     try:
         print(os.environ['CONDA_DEFAULT_ENV'], flush=True)
-        if platform == "win64":
+        print(platform, flush=True)
+        if platform == "win32":
             script = ['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file]
             print(script, flush=True)
             result = subprocess.run(script, text=True, capture_output=True, check=False, shell=True)

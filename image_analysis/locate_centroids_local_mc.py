@@ -38,30 +38,39 @@ def main():
         cm.stop_server(dview=dview)
     c, dview, n_processes = cm.cluster.setup_cluster(
         backend='local', n_processes=None, single_thread=False)
-    
-    #Yr, dims, T = cm.load_memmap(fname_new)
-    #images = np.reshape(Yr.T, [T] + list(dims), order='F')
 
-    #cm.stop_server(dview=dview)
+    mc = MotionCorrect(fnames, dview=dview, **opts.get_group('motion'))
+
+    mc.motion_correct(save_movie=True)
+    m_els = cm.load(mc.fname_tot_rig)
+    border_to_0 = 0 if mc.border_nan == 'copy' else mc.border_to_0 
+
+    fname_new = cm.save_memmap(mc.mmap_file, base_name='memmap_', order='C',
+        border_to_0=border_to_0, dview=dview) # exclude borders
+
+# now load the file
+    Yr, dims, T = cm.load_memmap(fname_new)
+    images = np.reshape(Yr.T, [T] + list(dims), order='F')
+
+    cm.stop_server(dview=dview)
+    c, dview, n_processes = cm.cluster.setup_cluster(
+        backend='local', n_processes=None, single_thread=False)
 
     cnm = cnmf.CNMF(n_processes, params=opts, dview=dview)
-    cnm = cnm.fit_file()
-    
-    Yr, dims, T = cm.load_memmap(cnm.mmap_file)
-    images = np.reshape(Yr.T, [T] + list(dims), order='F')
+    cnm = cnm.fit(images)
     
     Cn = cm.local_correlations(images.transpose(1,2,0))
     Cn[np.isnan(Cn)] = 0
 
-    cnm2 = cnm.refit(images, dview=dview)
+    cnm = cnm.refit(images, dview=dview)
 
-    cnm2.estimates.evaluate_components(images, cnm2.params, dview=dview)
+    cnm.estimates.evaluate_components(images, cnm.params, dview=dview)
 
-    cnm2.estimates.detrend_df_f(quantileMin=8, frames_window=250)
+    cnm.estimates.detrend_df_f(quantileMin=8, frames_window=250)
 
-    cnm2.estimates.select_components(use_object=True)
+    cnm.estimates.select_components(use_object=True)
 
-    cnm2.save(hdf5_file)
+    cnm.save(hdf5_file)
     outfile = open(cn_file, 'wb')
     pickle.dump(Cn, outfile)
     outfile.close()
