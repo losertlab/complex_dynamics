@@ -55,11 +55,11 @@ def locate_centroids(fnames, complex_dynamics_path, params, hdf5_file, cn_file):
         if platform == "win32":
             script = ['python', 'locate_centroids_local.py', fnames, str(params), hdf5_file, cn_file]
             print(script, flush=True)
-            result = subprocess.run(script, text=True, capture_output=True, check=False, shell=True)
+            result = subprocess.run(script, text=True, capture_output=True, check=False)
         else:
-            script = ['python', 'test_local.py']
+            script = ['python', 'locate_centroids_local_mc.py', fnames, str(params), hdf5_file, cn_file]
             print(script, flush=True)
-            result = subprocess.run(script, text=True, capture_output=True, check=False, shell=True)
+            result = subprocess.run(script, text=True, capture_output=True, check=False)
         print("stdout: " + result.stdout, flush=True)
         print("stderr: " + result.stderr, flush=True)
 

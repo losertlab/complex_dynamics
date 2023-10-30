@@ -136,6 +136,7 @@ class SocketServer(Socket):
 
     def socketOpen(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.settimeout(None)
         self.sock.bind((self.TCP_IP, self.TCP_PORT))
         self.sock.listen(1)
         print(self.name + u' server [ TCP_IP: ' + self.TCP_IP + ', TCP_PORT: ' + str(self.TCP_PORT) + ' ] is open', flush=True)
@@ -169,6 +170,7 @@ class SocketClient(Socket):
             self.sock = socket.socket()
             self.conn = self.sock
             self.sock.connect((self.TCP_IP, self.TCP_PORT))
+            self.sock.settimeout(None)
             print(self.name + u' client socket is connected with server socket [ TCP_SERVER_IP: ' + self.TCP_IP + ', TCP_SERVER_PORT: ' + str(self.TCP_PORT) + ' ]', flush=True)
             self.connectCount = 0
             #self.sendData()
